@@ -2,6 +2,33 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
+#  --- BASIC LOGIN SYSTEM ---
+def check_password():
+    """Returns True if the the password"""
+    def password_entered():
+        if st.session_state["password"] == st.secrets["password"]:
+            st.session_state["password_correct"] = True
+            del st.session_state["password"] # Deletes password from memory
+        else:
+            st.session_state["password_correct"] = False
+
+    if "password_correct" not in st.session_state:
+        # Pantalla de inicio de sesión
+        st.text_input("Contraseña de Acceso - PuenteData", type="password", on_change=password_entered, key="password")
+        return False
+    elif not st.session_state["password_correct"]:
+        # Incorrect password
+        st.text_input("Contraseña incorrecta. Intenta de nuevo:", type="password", on_change=password_entered, key="password")
+        st.error("😕 Acceso denegado")
+        return False
+    else:
+        return True
+    
+if not check_password():
+    st.stop() # Stops the app if theres not a correct login
+
+st.success("¡Bienvenido Mr. Puenti!")
+
 # 1. Configuración de la página
 st.set_page_config(page_title="PuenteData - Dashboard Demo", layout="wide")
 
