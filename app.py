@@ -86,10 +86,6 @@ with col_right:
     fig_bar = px.bar(df, x='Pedido_ID', y='Costo_Envio', color='Estado', text_auto=True)
     st.plotly_chart(fig_bar, use_container_width=True)
 
-# 6. Tabla de datos interactiva
-st.subheader("Detalle de Operaciones")
-st.dataframe(df, use_container_width=True)
-
 # --- SECCIÓN DE TENDENCIAS (Áreas) ---
 st.subheader("📈 Tendencia de Ingresos vs Costos Logísticos")
 # Simulamos datos de tendencia
@@ -123,3 +119,7 @@ with col_b:
 # --- TABLA DE ALERTA DE DATOS ---
 st.subheader("📋 Auditoría de Calidad de Datos")
 st.warning("Se detectaron 3 registros con direcciones incompletas que afectan el cálculo de ruta.")
+
+# 6. Tabla de datos interactiva
+st.subheader("Detalle de Operaciones")
+st.dataframe(df, use_container_width=True)
