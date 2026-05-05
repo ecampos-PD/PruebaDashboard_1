@@ -2,6 +2,9 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
+# 1. Configuración de la página
+st.set_page_config(page_title="PuenteData - Dashboard Demo", layout="wide")
+
 #  --- BASIC LOGIN SYSTEM ---
 def check_password():
     """Returns True if the the password"""
@@ -29,8 +32,7 @@ if not check_password():
 
 st.success("¡Bienvenido Mr. Puenti!")
 
-# 1. Configuración de la página
-st.set_page_config(page_title="PuenteData - Dashboard Demo", layout="wide")
+
 
 # 2. Título y Estética
 st.title("📊 Panel de Control Logístico | PuenteData")
@@ -87,3 +89,37 @@ with col_right:
 # 6. Tabla de datos interactiva
 st.subheader("Detalle de Operaciones")
 st.dataframe(df, use_container_width=True)
+
+# --- SECCIÓN DE TENDENCIAS (Áreas) ---
+st.subheader("📈 Tendencia de Ingresos vs Costos Logísticos")
+# Simulamos datos de tendencia
+df_trend = pd.DataFrame({
+    'Mes': ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+    'Ingresos': [100000, 120000, 110000, 140000, 150000, 170000],
+    'Costos': [40000, 45000, 42000, 48000, 50000, 52000]
+})
+fig_area = px.area(df_trend, x='Mes', y=['Ingresos', 'Costos'], 
+                   color_discrete_sequence=['#22c55e', '#ef4444'], # Verde y Rojo
+                   title="Eficiencia de Margen Operativo")
+st.plotly_chart(fig_area, use_container_width=True)
+
+# --- SECCIÓN DE RENDIMIENTO POR RUTA (Barras Horizontales) ---
+col_a, col_b = st.columns(2)
+
+with col_a:
+    st.subheader("🚛 Eficiencia por Ruta")
+    rutas_data = {'Ruta': ['Norte', 'Sur', 'Bajío', 'Occidente'], 'Eficiencia': [95, 82, 88, 75]}
+    fig_rutas = px.bar(rutas_data, x='Eficiencia', y='Ruta', orientation='h', 
+                       color='Eficiencia', color_continuous_scale='Viridis')
+    st.plotly_chart(fig_rutas, use_container_width=True)
+
+with col_b:
+    # --- MÉTRICA DE IMPACTO IA (Para el paquete avanzado) ---
+    st.subheader("🤖 Optimización con IA")
+    st.info("El algoritmo de PuenteData ha sugerido una re-ruta que reduciría el gasto de hoy en:")
+    st.metric(label="Ahorro Estimado Hoy", value="$1,250 MXN", delta="12% menos combustible")
+    st.success("Sugerencia: Consolidar pedidos de Ruta Occidente con Ruta Bajío.")
+
+# --- TABLA DE ALERTA DE DATOS ---
+st.subheader("📋 Auditoría de Calidad de Datos")
+st.warning("Se detectaron 3 registros con direcciones incompletas que afectan el cálculo de ruta.")
